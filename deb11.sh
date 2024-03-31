@@ -315,7 +315,7 @@ function advanced_settings() {
   fi
 
   if (whiptail --backtitle "Proxmox VE Helper Scripts" --title "ADVANCED SETTINGS COMPLETE" --yesno "Ready to create a Debian 11 VM?" --no-button Do-Over 10 58); then
-    echo -e "${RD}Creating a Debian 12 VM using the above advanced settings${CL}"
+    echo -e "${RD}Creating a Debian 11 VM using the above advanced settings${CL}"
   else
     header_info
     echo -e "${RD}Using Advanced Settings${CL}"
@@ -407,7 +407,7 @@ pvesm alloc $STORAGE $VMID $DISK0 4M 1>&/dev/null
 qm importdisk $VMID ${FILE} $STORAGE ${DISK_IMPORT:-} 1>&/dev/null
 qm set $VMID \
   -efidisk0 ${DISK0_REF}${FORMAT} \
-  -scsi0 ${DISK1_REF},${DISK_CACHE}${THIN}size=2G \
+  -scsi0 ${DISK1_REF},${DISK_CACHE}${THIN}size=60G \
   -boot order=scsi0 \
   -description "# Debian 11 VM
 ### https://github.com/tteck/Proxmox
