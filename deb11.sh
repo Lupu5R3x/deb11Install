@@ -370,7 +370,9 @@ fi
 msg_ok "Using ${CL}${BL}$STORAGE${CL} ${GN}for Storage Location."
 msg_ok "Virtual Machine ID is ${CL}${BL}$VMID${CL}."
 msg_info "Retrieving the URL for the Debian 11 Qcow2 Disk Image"
-URL=https://cloud.debian.org/images/cloud/bullseye/20240211-1654/debian-11-nocloud-amd64-20240211-1654.qcow2
+#URL=https://cloud.debian.org/images/cloud/bullseye/20240211-1654/debian-11-nocloud-amd64-20240211-1654.qcow2
+URL=https://cloud.debian.org/images/cloud/bullseye/20210814-734/debian-11-genericcloud-amd64-20210814-734.qcow2
+#https://cloud.debian.org/images/cloud/bullseye/20230601-1398/debian-11-genericcloud-amd64-20230601-1398.qcow2
 sleep 2
 msg_ok "${CL}${BL}${URL}${CL}"
 wget -q --show-progress $URL
