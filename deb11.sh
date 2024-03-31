@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#
 # Copyright (c) 2021-2023 tteck
 # Author: tteck (tteckster)
 # Edit by LupusRex
