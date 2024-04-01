@@ -371,7 +371,7 @@ msg_ok "Using ${CL}${BL}$STORAGE${CL} ${GN}for Storage Location."
 msg_ok "Virtual Machine ID is ${CL}${BL}$VMID${CL}."
 msg_info "Retrieving the URL for the Debian 11 Qcow2 Disk Image"
 #URL=https://cloud.debian.org/images/cloud/bullseye/20240211-1654/debian-11-nocloud-amd64-20240211-1654.qcow2
-URL=https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-genericcloud-amd64.qcow2
+URL=https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-generic-amd64.qcow2
 #https://cloud.debian.org/images/cloud/bullseye/20230601-1398/debian-11-genericcloud-amd64-20230601-1398.qcow2
 sleep 2
 msg_ok "${CL}${BL}${URL}${CL}"
@@ -409,7 +409,7 @@ pvesm alloc $STORAGE $VMID $DISK0 4M 1>&/dev/null
 qm importdisk $VMID ${FILE} $STORAGE ${DISK_IMPORT:-} 1>&/dev/null
 qm set $VMID \
   -efidisk0 ${DISK0_REF}${FORMAT} \
-  -scsi0 ${DISK1_REF},${DISK_CACHE}${THIN}size=60G \
+  -scsi0 ${DISK1_REF},${DISK_CACHE}${THIN}size=2G \
   -boot order=scsi0 \
   -description "# Debian 11 VM
 ### https://github.com/tteck/Proxmox
