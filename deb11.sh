@@ -414,6 +414,8 @@ qm set $VMID \
   -description "# Debian 11 VM
 ### https://github.com/tteck/Proxmox
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/D1D7EP4GF)" >/dev/null
+qm set $VMID --ide2 local-lvm:cloudinit
+qm set $VMID --agent enabled=1
 msg_ok "Created a Debian 11 VM ${CL}${BL}(${HN})"
 if [ "$START_VM" == "yes" ]; then
   msg_info "Starting Debian 11 VM"
