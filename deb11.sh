@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
-#
-# Copyright (c) 2021-2023 tteck
+
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
-# Edit by LupusRex
 # License: MIT
+# Edited by LupusRex, to create and install a Debian 11, with cloud-init enabled
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
 
 function header_info {
   clear
   cat <<"EOF"
-    ____       __    _                ______
-   / __ \___  / /_  (_)___ _____     <  /< /
-  / / / / _ \/ __ \/ / __ `/ __ \    / // /
- / /_/ /  __/ /_/ / / /_/ / / / /   / // /
-/_____/\___/_.___/_/\__,_/_/ /_/   /_//_/
+    ____       __    _                ________
+   / __ \___  / /_  (_)___ _____     <  / <  /
+  / / / / _ \/ __ \/ / __ `/ __ \    / /  / /
+ / /_/ /  __/ /_/ / / /_/ / / / /   / /  / /
+/_____/\___/_.___/_/\__,_/_/ /_/   /_/  /_/
+
 EOF
 }
 header_info
@@ -92,9 +93,9 @@ function check_root() {
 }
 
 function pve_check() {
-  if ! pveversion | grep -Eq "pve-manager/(7\.[2-9]|8\.[0-9])"; then
+  if ! pveversion | grep -Eq "pve-manager/(7.4-[1][3-9]|8.1.[1-9])"; then
     msg_error "This version of Proxmox Virtual Environment is not supported"
-    echo -e "Requires PVE Version 7.2 or higher"
+    echo -e "Requires PVE7 Version 7.4-13 or later, or PVE8 Version 8.1.1 or later."
     echo -e "Exiting..."
     sleep 2
     exit
@@ -154,7 +155,7 @@ function default_settings() {
   echo -e "${DGN}Using MAC Address: ${BGN}${MAC}${CL}"
   echo -e "${DGN}Using VLAN: ${BGN}Default${CL}"
   echo -e "${DGN}Using Interface MTU Size: ${BGN}Default${CL}"
-  echo -e "${DGN}Start VM when completed: ${BGN}no${CL}"
+  echo -e "${DGN}Start VM when completed: ${BGN}yes${CL}"
   echo -e "${BL}Creating a Debian 11 VM using the above default settings${CL}"
 }
 
@@ -370,9 +371,7 @@ fi
 msg_ok "Using ${CL}${BL}$STORAGE${CL} ${GN}for Storage Location."
 msg_ok "Virtual Machine ID is ${CL}${BL}$VMID${CL}."
 msg_info "Retrieving the URL for the Debian 11 Qcow2 Disk Image"
-#URL=https://cloud.debian.org/images/cloud/bullseye/20240211-1654/debian-11-nocloud-amd64-20240211-1654.qcow2
-URL=https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-generic-amd64.qcow2
-#https://cloud.debian.org/images/cloud/bullseye/20230601-1398/debian-11-genericcloud-amd64-20230601-1398.qcow2
+URL=URL=https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-generic-amd64.qcow2
 sleep 2
 msg_ok "${CL}${BL}${URL}${CL}"
 wget -q --show-progress $URL
@@ -411,9 +410,9 @@ qm set $VMID \
   -efidisk0 ${DISK0_REF}${FORMAT} \
   -scsi0 ${DISK1_REF},${DISK_CACHE}${THIN}size=2G \
   -boot order=scsi0 \
-  -description "# Debian 11 VM
-### https://github.com/tteck/Proxmox
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/D1D7EP4GF)" >/dev/null
+  -serial0 socket \
+  -description "#Debian 11 VM" >/dev/null
+qm disk resize $VMID scsi0 60G
 qm set $VMID --ide2 local-lvm:cloudinit
 qm set $VMID --agent enabled=1
 msg_ok "Created a Debian 11 VM ${CL}${BL}(${HN})"
@@ -423,3 +422,4 @@ if [ "$START_VM" == "yes" ]; then
   msg_ok "Started Debian 11 VM"
 fi
 msg_ok "Completed Successfully!\n"
+echo "More Info at https://github.com/tteck/Proxmox/discussions/1988"
