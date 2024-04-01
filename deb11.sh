@@ -61,7 +61,7 @@ function cleanup() {
 
 TEMP_DIR=$(mktemp -d)
 pushd $TEMP_DIR >/dev/null
-if whiptail --backtitle "Proxmox VE Helper Scripts" --title "Debian 11 VM" --yesno "This will create a New Debian 11 VM. Proceed?" 10 58; then
+if whiptail --backtitle "Proxmox VE Helper Scripts" --title "Debian 11 Cloud-init VM" --yesno "This will create a New Debian 11 Cloud-init VM. Proceed?" 10 58; then
   :
 else
   header_info && echo -e "⚠ User exited script \n" && exit
@@ -401,7 +401,7 @@ for i in {0,1}; do
   eval DISK${i}_REF=${STORAGE}:${DISK_REF:-}${!disk}
 done
 
-msg_info "Creating a Debian 11 VM"
+msg_info "Creating a Debian 11 Cloud-init VM"
 qm create $VMID -agent 1${MACHINE} -tablet 0 -localtime 1 -bios ovmf${CPU_TYPE} -cores $CORE_COUNT -memory $RAM_SIZE \
   -name $HN -tags proxmox-helper-scripts -net0 virtio,bridge=$BRG,macaddr=$MAC$VLAN$MTU -onboot 1 -ostype l26 -scsihw virtio-scsi-pci
 pvesm alloc $STORAGE $VMID $DISK0 4M 1>&/dev/null
@@ -411,15 +411,15 @@ qm set $VMID \
   -scsi0 ${DISK1_REF},${DISK_CACHE}${THIN}size=2G \
   -boot order=scsi0 \
   -serial0 socket \
-  -description "#Debian 11 VM" >/dev/null
+  -description "#Debian 11 Cloud-init VM" >/dev/null
 qm disk resize $VMID scsi0 60G
 qm set $VMID --ide2 local-lvm:cloudinit
 qm set $VMID --agent enabled=1
-msg_ok "Created a Debian 11 VM ${CL}${BL}(${HN})"
-if [ "$START_VM" == "yes" ]; then
-  msg_info "Starting Debian 11 VM"
-  qm start $VMID
-  msg_ok "Started Debian 11 VM"
-fi
-msg_ok "Completed Successfully!\n"
+msg_ok "Created a Debian 11 cloud-init VM ${CL}${BL}(${HN})"
+#if [ "$START_VM" == "yes" ]; then
+#  msg_info "Starting Debian 11 VM"
+#  qm start $VMID
+#  msg_ok "Started Debian 11 VM"
+#fi
+msg_ok "Completed Successfully!\nRemember to set up user and password in Cloud-init!"
 echo "More Info at https://github.com/tteck/Proxmox/discussions/1988"
