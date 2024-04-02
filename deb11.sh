@@ -371,7 +371,7 @@ fi
 msg_ok "Using ${CL}${BL}$STORAGE${CL} ${GN}for Storage Location."
 msg_ok "Virtual Machine ID is ${CL}${BL}$VMID${CL}."
 msg_info "Retrieving the URL for the Debian 11 Qcow2 Disk Image"
-URL=https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-nocloud-arm64.qcow2
+URL=https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-nocloud-amd64.qcow2
 #URL=https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-generic-amd64.qcow2
 sleep 2
 msg_ok "${CL}${BL}${URL}${CL}"
@@ -417,10 +417,10 @@ qm disk resize $VMID scsi0 60G
 #qm set $VMID --ide2 local-lvm:cloudinit
 qm set $VMID --agent enabled=1
 msg_ok "Created a Debian 11 VM ${CL}${BL}(${HN})"
-#if [ "$START_VM" == "yes" ]; then
-#  msg_info "Starting Debian 11 VM"
-#  qm start $VMID
-#  msg_ok "Started Debian 11 VM"
-#fi
-msg_ok "Completed Successfully!\nRemember to set up user and password in Cloud-init!"
+if [ "$START_VM" == "yes" ]; then
+  msg_info "Starting Debian 11 VM"
+  qm start $VMID
+  msg_ok "Started Debian 11 VM"
+fi
+msg_ok "Completed Successfully!\n"
 echo "More Info at https://github.com/tteck/Proxmox/discussions/1988"
