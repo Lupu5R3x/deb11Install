@@ -146,6 +146,7 @@ function default_settings() {
   MTU=""
   START_VM="yes"
   DISK_SIZE="2"
+  UPDATE_DISK="no"
   echo -e "${DGN}Using Virtual Machine ID: ${BGN}${VMID}${CL}"
   echo -e "${DGN}Using Machine Type: ${BGN}i440fx${CL}"
   echo -e "${DGN}Using Disk Cache: ${BGN}None${CL}"
@@ -264,8 +265,10 @@ function advanced_settings() {
     if [ -z $DISK_SIZE ]; then
       DISK_SIZE="2"
       echo -e "${DGN}Setting disk size to: ${BGN}${$DISK_SIZE}G${CL}"
+      $UPDATE_DISK="no"
     else
       echo -e "${DGN}Setting disk size to: ${BGN}${DISK_SIZE}G${CL}"
+      $UPDATE_DISK="Yes"
     fi
   else
     exit-script
@@ -426,7 +429,7 @@ qm set $VMID \
   -serial0 socket \
   -description "# Debian 12 VM" >/dev/null
 
-if ["$DISK_SIZE"] != "2"; then
+if [ "$UPDATE_DISK" == "yes" ]; then
 qm disk resize $VMID scsi0 ${DISK_SIZE}G
 fi
 #qm set $VMID --ide2 local-lvm:cloudinit
