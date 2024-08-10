@@ -265,10 +265,10 @@ function advanced_settings() {
     if [ -z $DISK_SIZE ]; then
       DISK_SIZE="2"
       echo -e "${DGN}Setting disk size to: ${BGN}${$DISK_SIZE}G${CL}"
-      $UPDATE_DISK="no"
+      UPDATE_DISK="no"
     else
       echo -e "${DGN}Setting disk size to: ${BGN}${DISK_SIZE}G${CL}"
-      $UPDATE_DISK="Yes"
+      UPDATE_DISK="yes"
     fi
   else
     exit-script
