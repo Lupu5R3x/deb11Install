@@ -436,5 +436,5 @@ if [ "$START_VM" == "yes" ]; then
   qm start $VMID
   msg_ok "Started Debian 12 VM"
 fi
-msg_ok "Completed Successfully!\n"
+msg_ok "Completed Successfully!\n Remember to install qemu-guest-agent in the host system\n apt-get update -y && apt-get install qemu-guest-agent -y"
 echo "More Info at https://github.com/tteck/Proxmox/discussions/1988"
