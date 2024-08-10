@@ -145,7 +145,7 @@ function default_settings() {
   VLAN=""
   MTU=""
   START_VM="yes"
-  DISK_SIZE="2G"
+  DISK_SIZE="2"
   echo -e "${DGN}Using Virtual Machine ID: ${BGN}${VMID}${CL}"
   echo -e "${DGN}Using Machine Type: ${BGN}i440fx${CL}"
   echo -e "${DGN}Using Disk Cache: ${BGN}None${CL}"
@@ -262,10 +262,10 @@ function advanced_settings() {
 
  if DISK_SIZE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --inputbox "Set disk size in GiB" 8 58 2 --title "DISK SIZE" --cancel-button Exit-Script 3>&1 1>&2 2>&3); then
     if [ -z $DISK_SIZE ]; then
-      DISK_SIZE="2G"
-      echo -e "${DGN}Setting disk size to: ${BGN}$DISK_SIZE${CL}"
+      DISK_SIZE="2"
+      echo -e "${DGN}Setting disk size to: ${BGN}${$DISK_SIZE}G${CL}"
     else
-      echo -e "${DGN}Setting disk size to: ${BGN}$DISK_SIZE${CL}"
+      echo -e "${DGN}Setting disk size to: ${BGN}${DISK_SIZE}G${CL}"
     fi
   else
     exit-script
