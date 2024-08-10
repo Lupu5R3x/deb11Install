@@ -421,12 +421,14 @@ pvesm alloc $STORAGE $VMID $DISK0 4M 1>&/dev/null
 qm importdisk $VMID ${FILE} $STORAGE ${DISK_IMPORT:-} 1>&/dev/null
 qm set $VMID \
   -efidisk0 ${DISK0_REF}${FORMAT} \
-  -scsi0 ${DISK1_REF},${DISK_CACHE}${THIN}size=${DISK_SIZE}G \
+  -scsi0 ${DISK1_REF},${DISK_CACHE}${THIN}size=2G \
   -boot order=scsi0 \
   -serial0 socket \
   -description "# Debian 12 VM" >/dev/null
 
-#qm disk resize $VMID scsi0 ${DISK_SIZE}G
+if ["$DISK_SIZE"] != "2"; then
+qm disk resize $VMID scsi0 ${DISK_SIZE}G
+fi
 #qm set $VMID --ide2 local-lvm:cloudinit
 qm set $VMID --agent enabled=1
 
